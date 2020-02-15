@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { IRoom } from 'src/app/interfaces/room.interface';
+import { AuthService } from '../../services/auth.service';
+import { ChatService } from '../../services/chat.service';
 
 @Component({
   selector: 'app-navbar',
@@ -6,10 +9,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
+  
 
-  constructor() { }
+  constructor( public authService: AuthService,
+               public chatService: ChatService ) { }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
 }

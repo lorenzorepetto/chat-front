@@ -27,7 +27,8 @@ chat application Page
     float: left;
     z-index: 9;
     top: 0px;
-    border-right: 1px solid rgba(120, 130, 140, 0.13); }
+    border-right: 1px solid rgba(120, 130, 140, 0.13); 
+    border-bottom: 1px solid rgba(120, 130, 140, 0.13) }
     .chat-main-box .chat-left-aside .open-panel {
       display: none;
       cursor: pointer;

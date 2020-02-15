@@ -10,7 +10,7 @@ export class WebsocketService {
   
 
 
-  constructor( private socket: Socket ) { 
+  constructor( private socket: Socket) { 
     this.checkStatus();
   }
   
@@ -22,11 +22,13 @@ export class WebsocketService {
     this.socket.on('connect', () => {
       this.socketStatus = true;
     });
+    
 
     this.socket.on('disconnect', () => {
       this.socketStatus = false;
     })
   }
+
 
   //===============================================
   //              SOCKET - EMIT & LISTEN

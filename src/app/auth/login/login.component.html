@@ -27,7 +27,7 @@
 
                         <div class="form-group text-center">
                             <div class="col-xs-12 p-b-20">
-                                <button routerLink="/chat" class="btn btn-block btn-lg btn-info btn-rounded" type="submit">Ingresar al chat</button>
+                                <button (click)="authService.login()" class="btn btn-block btn-lg btn-info btn-rounded" type="submit">Ingresar al chat</button>
                             </div>
                         </div>
                     </form>
