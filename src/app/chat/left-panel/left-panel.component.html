@@ -1,8 +1,8 @@
 <div class="chat-left-aside" [ngClass]="{'show-panel': showPanel}">
      
     <!-- PANEL -->
-    <div class="open-panel">
-      <i class="ti-angle-right" (click)="togglePanel()"></i>
+    <div class="open-panel" (click)="togglePanel()">
+      <i class="ti-angle-right"></i>
     </div>
      <!--PANEL  -->
     
@@ -19,7 +19,7 @@
                       <img [src]="user.picture" alt="user-img" class="img-circle"> 
                       <span>{{ user.name }} 
                           <small *ngIf="user.status === 'ONLINE'" class="text-success">Disponible</small>
-                          <small *ngIf="user.status === 'BUSY'" class="text-warning">No disponible</small>
+                          <small *ngIf="user.status === 'BUSY'" class="text-warning">Ocupado</small>
                     </span>
                 </a>
               </li>

@@ -1,0 +1,26 @@
+.trash{
+    font-size: x-large;
+    padding: 20px;
+    position: absolute;
+    color: black;
+    cursor: pointer;
+}
+
+.chat-message {
+    max-width: 700px !important;
+}
+@media(max-width: 1200px) {
+    .chat-message {
+        max-width: 300px !important;
+    }
+}
+@media(max-width: 767px) {
+    .chat-message {
+        max-width: 200px !important;
+    }
+}
+
+
+li {
+    border-bottom: 1px solid rgba(120, 130, 140, 0.13) !important;
+}

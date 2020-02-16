@@ -46,6 +46,14 @@ export class ChatService {
   getMessages() {
     return this.wsService.listen('new-message')
   }
+  
+  getDeletedMessages() {
+    return this.wsService.listen('update-messages')
+  }
+
+  deleteMessage(message_id: string, room_id: string) {
+    this.wsService.emit('delete-message', {message_id, room_id})
+  }
 
   //===============================================
   //                  USERS
@@ -70,7 +78,10 @@ export class ChatService {
       this.wsService.emit('set-user', userSocket);
     })
   }
-
+  
+  emitSetStatus( status: string, room_id: string ) {
+    this.wsService.emit('set-status', { status, room_id });
+  }
 
 
 

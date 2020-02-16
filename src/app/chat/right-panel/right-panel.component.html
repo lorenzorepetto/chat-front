@@ -1,11 +1,14 @@
 <div class="chat-right-aside">
     <div class="chat-main-header">
         <div *ngIf="user && chatService.currentRoom$ | async as current; else loadingHeader" class="p-20 b-b">
-            <h2>{{ user.name }}</h2>
+            <h2>
+                <i class="fa fa-user"></i>
+                {{ user.name }}
+            </h2>
             <div class="row mb-0 pb-0" >
                 <div class="col">
                     <h5 *ngIf="user.status === 'ONLINE'" class="text-success">Disponible</h5>
-                    <h5 *ngIf="user.status === 'BUSY'" class="text-warning">No disponible</h5>
+                    <h5 *ngIf="user.status === 'BUSY'" class="text-warning">Ocupado</h5>
                 </div>
                 <div class="col">
                     <h6 class="d-inline mr-3">Cambiar estado a: </h6>
@@ -13,8 +16,9 @@
                     <button (click)="changeStatus('BUSY')" *ngIf="user.status === 'ONLINE'" class="btn btn-rounded btn-warning">Ocupado</button>
                 </div>
             </div>
-            <h2 class="box-title mt-2 p-3">
-                <small>Sala </small>{{ current.name | titlecase}}
+            <h2 class="box-title p-3">
+                <small>Sala: </small>
+                <span class="badge badge-pill badge-primary ml-2">{{ current.name | titlecase}}</span>
             </h2>
             <ng-template #loadingHeader>
                 <i class="fa fa-spinner fa-spin"></i>
@@ -23,33 +27,44 @@
         </div>
     </div>
 
-    <div class="chat-rbox" id="chat-messages">
-        <ul *ngIf="messages" class="chat-list p-20" id="divChatbox">
+    <div class="chat-rbox">
+        <ol *ngIf="messages; else loadingMessages" class="chat-list p-20" #scrollMe [scrollTop]="scrollMe.scrollHeight">
             <!--chat Row -->
             <li *ngFor="let message of messages" [ngClass]="{'reverse': user && user.email === message.user.email}">
-                <!-- Propio -->
-                <div *ngIf="message && user.email !== message.user.email">
+                <!-- Otro -->
+                <div class="row" *ngIf="message && user.email !== message.user.email">
                     <div class="chat-img"><img *ngIf="message.user.picture" [attr.src]="message.user.picture" [alt]="message.user.name" /></div>
                     <div class="chat-content">
                         <h5>{{ message.user.name }}</h5>
-                        <div class="box bg-light-info">{{ message.text }}</div>
+                        <div class="box bg-light-info chat-message">{{ message.text }}</div>
                     </div>
-                    <div class="chat-time">{{ message.date | date }}</div>
+                    <div class="chat-time p-2">{{ message.date | date:'MMM d, h:mm a' }}</div>
                 </div>
 
-                <!-- Otro -->
-                <div *ngIf="message && user.email === message.user.email">
-                    <div class="chat-content">
-                        <h5>{{ user.name }}</h5>
-                        <div class="box bg-light-inverse">{{ message.text }}</div>
+                <!-- Propio -->
+                <div class="row" *ngIf="message && user.email === message.user.email">
+                    
+                    <div class="col text-left">
+                        <div (click)="remove(message)" alt="Eliminar mensaje" class="trash">
+                            <i class="fa fa-trash"></i>
+                        </div>
                     </div>
-                    <div class="chat-img"><img *ngIf="user.picture" [attr.src]="user.picture" [alt]="user.name" /></div>
-                    <div class="chat-time">{{ message.date | date }}</div>
+                    <div>
+                        <div class="chat-content">
+                            <h5>{{ user.name }}</h5>
+                            <div class="box bg-light-inverse chat-message">{{ message.text }}</div>
+                        </div>
+                        <div class="chat-img"><img *ngIf="user.picture" [attr.src]="user.picture" [alt]="user.name" /></div>
+                        <div class="chat-time p-2">{{ message.date | date:'MMM d, h:mm a' }}</div>
+                    </div>
                 </div>
             </li>
             <!--chat Row -->
-            <ng-template #loading>Cargando</ng-template>
-        </ul>
+        </ol>
+        <ng-template #loadingMessages>
+            <i class="fa fa-spinner fa-spin"></i>
+            Cargando
+        </ng-template>
     </div>
     <div class="card-body b-t">
         <form (ngSubmit)="send()">
@@ -61,7 +76,8 @@
                             placeholder="Escribe tu mensaje aquí" 
                             class="form-control b-0"
                             autofocus
-                            autocomplete="false">
+                            autocomplete="off"
+                            maxlength="100">
                     <!-- </textarea> -->
                 </div>
                 <div class="col-4 text-right">
