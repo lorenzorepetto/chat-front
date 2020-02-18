@@ -7,12 +7,14 @@ import { ActionReducerMap } from '@ngrx/store'
 export interface AppState {
     user: reducers.UserState,
     currentRoom: reducers.CurrentRoomState,
-    activeUsers: reducers.ActiveUsersState
+    activeUsers: reducers.ActiveUsersState,
+    rooms: reducers.RoomsState
 }
 
 
 export const APP_REDUCERS: ActionReducerMap<AppState> = {
     user: reducers.userReducer,
     currentRoom: reducers.currentRoomReducer,
-    activeUsers: reducers.activeUsersReducer
+    activeUsers: reducers.activeUsersReducer,
+    rooms: reducers.roomsReducer
 };

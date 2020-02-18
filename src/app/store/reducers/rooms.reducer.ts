@@ -1,13 +1,11 @@
-import * as fromCurrentRoom from '../actions'
+import * as fromRooms from '../actions'
 import { IRoom } from '../../interfaces/room.interface';
-import { IMessage } from '../../interfaces/message.interface';
 
 //===============================================
 //                  INTERFACE
 //===============================================
-export interface CurrentRoomState {
-    room: IRoom;
-    messages: IMessage[];
+export interface RoomsState {
+    rooms: IRoom[];
     loaded: boolean;
     loading: boolean;
     error: any;
@@ -16,9 +14,8 @@ export interface CurrentRoomState {
 //===============================================
 //                  INITIAL
 //===============================================
-const initState: CurrentRoomState = {
-    room: null,
-    messages: [],
+const initState: RoomsState = {
+    rooms: [],
     loaded: false,
     loading: false,
     error: null
@@ -27,41 +24,30 @@ const initState: CurrentRoomState = {
 //===============================================
 //                  REDUCER
 //===============================================
-export function currentRoomReducer( state = initState, action: fromCurrentRoom.currentRoomActions): CurrentRoomState {
+export function roomsReducer( state = initState, action: fromRooms.roomsActions): RoomsState {
     
     switch (action.type) {
-        case fromCurrentRoom.LOAD_ROOM:
+        case fromRooms.LOAD_ROOMS:
             return {
                 ...state,
                 loading: true,
                 error: null
             }
     
-        case fromCurrentRoom.LOAD_ROOM_SUCCESS:
+        case fromRooms.LOAD_ROOMS_SUCCESS:
             return {
                 ...state,
                 loading: false,
                 loaded: true,
-                room: { ... action.room},
-                messages: [ ...action.messages ]
+                rooms: [ ... action.rooms ]
             }
         
-        case fromCurrentRoom.LOAD_ROOM_FAIL:
+        case fromRooms.LOAD_ROOMS_FAIL:
             return {
                 ...state,
                 loaded: false,
                 loading: false,
                 error: action.payload
-            }
-        
-
-        case fromCurrentRoom.LISTEN_TO_MESSAGES:
-            return state;
-        
-        case fromCurrentRoom.UPDATE_MESSAGES:
-            return {
-                ...state,
-                messages: [...action.messages]
             }
 
         default:

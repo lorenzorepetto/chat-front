@@ -8,6 +8,7 @@ import { IMessage } from '../../interfaces/message.interface';
 export const LOAD_ROOM = '[Current Room] Load Room';
 export const LOAD_ROOM_FAIL = '[Current Room] Load Room FAIL';
 export const LOAD_ROOM_SUCCESS = '[Current Room] Load Room SUCCESS';
+export const SET_ROOM = '[Current Room] Set new room';
 export const LISTEN_TO_MESSAGES = '[Current Room] Listening to Update-Messages'
 export const UPDATE_MESSAGES = '[Current Room] Update Messages'
 
@@ -30,6 +31,13 @@ export class LoadRoomSuccessAction implements Action {
     constructor( public room: IRoom, public messages: IMessage[] ) {}
 }
 
+export class SetRoomAction implements Action {
+    readonly type = SET_ROOM;
+
+    constructor( public id: string ){}
+}
+
+
 export class ListenToMessagesAction implements Action {
     readonly type = LISTEN_TO_MESSAGES;
 }
@@ -40,11 +48,14 @@ export class UpdateMessagesAction implements Action {
     constructor( public messages: IMessage[] ) {}
 }
 
+
+
 //===============================================
 //                  EXPORTS
 //===============================================
 export type currentRoomActions =  LoadRoomAction |
                                   LoadRoomFailAction | 
                                   LoadRoomSuccessAction |
+                                  SetRoomAction |
                                   ListenToMessagesAction |
                                   UpdateMessagesAction;

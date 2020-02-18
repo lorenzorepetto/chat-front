@@ -29,6 +29,23 @@
                     <small>Sala: </small>
                     <span class="badge badge-pill badge-primary ml-2">{{ room.name | titlecase}}</span>
                 </h2>
+                <div>
+                    <h6 class="mb-0">
+                        <a data-toggle="collapse" class="title-desc" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                            Descripción
+                            <i class="fa fa-arrow-down"></i>
+                        </a>
+                    </h6>
+                    <div class="collapse" id="collapseExample">
+                        <div *ngIf="room.description" class="card card-body mb-0 description">
+                            {{ room.description }}                            
+                        </div>
+                        <div *ngIf="!room.description" class="card card-body mb-0 description">
+                            Esta sala no tiene descripción
+                        </div>
+                    </div>    
+                </div>
+                
             </div>
             <ng-template #loadingRoom>
                 <h2>

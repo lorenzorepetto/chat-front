@@ -36,8 +36,6 @@ export class ChatService {
   }
   
   getData() {
-    
-  
     this.subscription = this.http.get(`http://localhost:5000/data`)
               .subscribe( (data: any) => {
 
@@ -48,10 +46,34 @@ export class ChatService {
   }
 
 
-  getCurrentRoom() {
+  //===============================================
+  //                  ROOMS
+  //===============================================
+  
+  // API
+  getCurrentRoom( room_id?: string) {
+    if (room_id) {
+      return this.http.get(`http://localhost:5000/room/${ room_id }`)
+    }
     return this.http.get(`http://localhost:5000/data`);
   }
 
+  getRooms() {
+    return this.http.get(`http://localhost:5000/room`);    
+  }
+  
+  newRoom( room: { name: string, email: string, description?: string }) {
+    return this.http.post(`http://localhost:5000/room`, room )
+  }
+  
+  deleteRoom( room_id: string ) {
+    return this.http.delete(`http://localhost:5000/room/${ room_id }`)
+  }
+
+  // SOCKET
+  emitSetRoom( room_id: string) {
+    return this.wsService.emit('change-room', { room_id } )
+  }
 
   //===============================================
   //                  MESSAGES

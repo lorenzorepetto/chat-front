@@ -31,19 +31,38 @@
     <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
       <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
         <li class="nav-item dropdown ml-2">
-          <a class="nav-link dropdown-toggle color-alice" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          
+          <a class="nav-link dropdown-toggle color-alice" (click)="getRooms()" href="" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fa fa-comments"></i>
             Salas
           </a>
+          
           <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <a *ngFor="let room of chatService.rooms$ | async" class="dropdown-item" href="#">
-              <i class="fa fa-arrow-circle-right"></i>
-              {{ room.name | titlecase }}
-            </a>
+            <div *ngIf="!loadingRooms">
+              <a *ngFor="let room of rooms" (click)="changeRoom(room._id)" class="dropdown-item pointer" role="button">
+                <div class="row">
+                  <div class="col">
+                    <i class="fa fa-arrow-circle-right"></i>
+                    {{ room.name | titlecase }}
+                  </div>
+                  <div class="col">
+                    <div *ngIf="room.owner && room.owner.email === user.email" class="trash text-right">
+                      <i class="fa fa-trash" alt="Eliminar Sala" (click)="removeRoom( room )"></i>
+                    </div>
+                  </div>
+                  
+                </div>
+              </a>
+            </div>
+            <div *ngIf="loadingRooms" class="dropdown-item">
+                <i class="fa fa-spinner fa-spin"></i>
+                Cargando salas
+            </div>
+
           </div>
         </li>
         <li class="nav-item">
-          <a class="nav-link color-alice" href="#">
+          <a class="nav-link color-alice pointer" (click)="showNewRoom()">
             <i class="fa fa-plus"></i>
             Crear Sala
           </a>

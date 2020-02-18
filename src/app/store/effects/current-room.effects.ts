@@ -5,7 +5,6 @@ import * as currentRoomActions from '../actions';
 
 import { of } from "rxjs";
 import { map, switchMap, catchError, filter } from 'rxjs/operators';
-import { AuthService } from '../../services/auth.service';
 import { IMessage } from '../../interfaces/message.interface';
 import { ChatService } from '../../services/chat.service';
 
@@ -28,6 +27,20 @@ export class CurrentRoomEffects {
                 )
         }),
     )
+
+    @Effect()
+    setRoom$ = this.actions$.pipe(
+        ofType( currentRoomActions.SET_ROOM ),
+        switchMap( (action) => {
+            this.chatService.emitSetRoom(action['id']);
+            return this.chatService.getCurrentRoom(action['id'])
+                .pipe(
+                    map( data => new currentRoomActions.LoadRoomSuccessAction(data['currentRoom'], data['messages'])),
+                    catchError(error => of( new currentRoomActions.LoadRoomFailAction(error)))
+                )
+        })
+    )
+    
 
     @Effect()
     listenToMessages$ = this.actions$.pipe(
