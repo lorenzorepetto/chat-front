@@ -6,6 +6,8 @@ import { AuthService } from '../../services/auth.service';
 import { filter } from 'rxjs/operators';
 import { IUser, validStates } from '../../interfaces/user.interface';
 import Swal from 'sweetalert2'
+import { Store } from '@ngrx/store';
+import { AppState } from '../../store/app.reducers';
 
 @Component({
   selector: 'app-right-panel',
@@ -15,35 +17,41 @@ import Swal from 'sweetalert2'
 export class RightPanelComponent implements OnInit {
   
   text: string = '';
+  
+  // User
   user: IUser = null;
+  loadedUser: boolean;
+  errorUser: any;
+  
+  // Room
   room: IRoom = null;
-  messages: IMessage[] = null;
+  messages: IMessage[];
+  loadedRoom: boolean;
+  errorRoom: any; 
 
   constructor( public chatService: ChatService,
-               public authService: AuthService ) { }
+               public authService: AuthService,
+               private store: Store<AppState> ) { }
 
-  ngOnInit() {
-    
-    this.initMessagesSubs();
-    
+  ngOnInit() {  
+    this.initCurrentRoomSubs();    
     this.initUserSub();
-
-    this.chatService.currentRoom$.subscribe( room => this.room = room);
   }
+  
 
+  //===============================================
+  //                  MESSAGES
+  //===============================================
   send() {
     if (this.text.trim().length === 0) {
       return;
     }
-
     const message: IMessageSend = {
       text: this.text,
       user: this.user,
       room: this.room._id
     }
-
     this.chatService.sendMessage(message);
-    
     this.text = '';
   }
 
@@ -66,6 +74,10 @@ export class RightPanelComponent implements OnInit {
     })
   }
 
+
+  //===============================================
+  //                  STATUS
+  //===============================================
   changeStatus( status: validStates ) {
     if (this.room) {
       this.user.status = status;
@@ -78,34 +90,23 @@ export class RightPanelComponent implements OnInit {
   //===============================================
   //                  PRIVATE SUBS
   //===============================================
-  private initMessagesSubs() {
-    // Mensajes de la bd
-    this.chatService.messages$.subscribe( messages => {
-      this.messages = messages;
-    });
-    
-    // Mensajes nuevos
-    this.chatService.getMessages().subscribe( (message: IMessage) =>{ 
-      this.messages.push(message);
-    });
-    
-    // Mensajes eliminados
-    this.chatService.getDeletedMessages().subscribe( (message: IMessage) =>{
-      this.messages = this.messages.filter( m => m._id != message._id);
-    });
+  private initCurrentRoomSubs() {
+    this.store.select('currentRoom')
+      .subscribe( currentRoom => {
+        this.room = currentRoom.room;
+        this.loadedRoom = currentRoom.loaded;
+        this.messages = currentRoom.messages;
+        this.errorRoom = currentRoom.error; 
+      });
   }
 
   private initUserSub() {
-    this.authService.getUser$().pipe(
-      filter( userLogged => userLogged !== null)
-    ).subscribe( userLogged => {
-       this.user = {
-         name: userLogged.name,
-         email: userLogged.email,
-         picture: userLogged.picture,
-         status: 'ONLINE'
-       }
-    })
+    this.store.select('user')
+      .subscribe( user => {
+        this.loadedUser = user.loaded;
+        this.user = user.user;
+        this.errorUser = user.error;
+      }) 
   }
 
 }

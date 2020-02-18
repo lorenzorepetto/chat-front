@@ -1,18 +1,24 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       
     <a class="navbar-brand mr-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      <div class="nav-item dropdown">
-        <img *ngIf="authService.userProfile$ | async as profile" 
-           [src]="profile.picture" alt="user-img" 
+      <div *ngIf="!loadingUser && !errorUser; else loading" class="nav-item dropdown">
+        <img [src]="user.picture" alt="user-img" 
            width="40" height="40" class="img-circle"> 
+        
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <a *ngIf="authService.loggedIn" (click)="authService.logout()"
+          <a  (click)="authService.logout()"
             class="dropdown-item" href="#">
             <i class="fa fa-sign-out"></i>
             Cerrar sesión
           </a>
         </div>
       </div>
+      <ng-template #loading>
+        <h2 class="text-white">
+            <i class="fa fa-spinner fa-spin"></i>
+            Cargando
+        </h2>
+      </ng-template>
 
             
     </a> 

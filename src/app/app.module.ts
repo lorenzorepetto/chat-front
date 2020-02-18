@@ -6,6 +6,13 @@ import { SharedModule } from './shared/shared.module';
 import { ChatModule } from './chat/chat.module';
 import { AppRoutingModule } from './app-routing.module';
 
+// REDUX
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { EffectsModule } from '@ngrx/effects';
+import { APP_REDUCERS } from './store/app.reducers';
+import { effectsArray } from './store/effects/index';
+import { environment } from 'src/environments/environment';
 
 // SOCKETS
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
@@ -26,7 +33,13 @@ import { LoginComponent } from './auth/login/login.component';
     AppRoutingModule,
     SharedModule,
     ChatModule,
-    SocketIoModule.forRoot(config)
+    SocketIoModule.forRoot(config),
+    StoreModule.forRoot(APP_REDUCERS),
+    EffectsModule.forRoot(effectsArray),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25, // Retains last 25 states
+      logOnly: environment.production, // Restrict extension to log-only mode
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]

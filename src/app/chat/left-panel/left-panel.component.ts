@@ -3,7 +3,13 @@ import { IRoom } from '../../interfaces/room.interface';
 import { ChatService } from '../../services/chat.service';
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { IUserSocket } from '../../interfaces/user.interface';
+import { IUserSocket, IUser } from '../../interfaces/user.interface';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../store/app.reducers';
+
+
+// Redux
+import * as fromActions from "../../store/actions";
 
 @Component({
   selector: 'app-left-panel',
@@ -14,25 +20,35 @@ export class LeftPanelComponent implements OnInit {
   
   showPanel: boolean = false;
 
+  user: IUser;
+  users: IUserSocket[] = [];
+  loading: boolean = true;
 
-  activeUsersObs: Observable<any>;
-
-  constructor( public chatService: ChatService ) { }
+  constructor( public chatService: ChatService,
+               private store: Store<AppState> ) { }
 
   ngOnInit() {
-    this.activeUsersObs = this.chatService.getActiveUsers()
-          .pipe(
-            filter( (users: IUserSocket[]) => users.length !== 0 )
-          )
-    
-    this.chatService.currentRoom$.subscribe( currentRoom => {
-      this.chatService.emitActiveUsers( currentRoom._id );
-    })
-    
-    this.activeUsersObs.subscribe(data => console.log(data))
-    
-  }
 
+    this.store.select('user')
+      .subscribe( user => this.user = user.user )
+
+    this.store.select('activeUsers').pipe(
+      filter( activeUsers => activeUsers.users.length > 0)
+    ).subscribe( activeUsers => {
+      if (this.user) {
+        this.users = activeUsers.users.filter( user => user.email != this.user.email );
+        this.loading = false;
+      }
+    })    
+
+    this.store.select('currentRoom')
+      .subscribe( currentRoom => {
+        if (currentRoom.room) {
+          this.store.dispatch( new fromActions.ListenToUsersAction( currentRoom.room._id))
+        }        
+      })
+        
+  }
 
 
   togglePanel(){

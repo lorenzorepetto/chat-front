@@ -7,6 +7,11 @@ import { AuthService } from './auth.service';
 import { IUserSocket, IUser } from '../interfaces/user.interface';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+import { AppState } from '../store/app.reducers';
+
+import * as fromCurrentRoom from "../store/actions";
+
 
 @Injectable({
   providedIn: 'root'
@@ -17,40 +22,49 @@ export class ChatService {
   rooms$ = new EventEmitter<IRoom[]>();
   currentRoom$ = new EventEmitter<IRoom>();
   
+  userLogged: IUser;
 
   subscription: Subscription = new Subscription();
 
 
   constructor( public wsService: WebsocketService,
+               private store: Store<AppState>,
                public authService: AuthService,
                private http: HttpClient ) { }
     
-  ngOnInit() {}
+  ngOnInit() {
+  }
   
   getData() {
+    
+  
     this.subscription = this.http.get(`http://localhost:5000/data`)
               .subscribe( (data: any) => {
+
                 this.messages$.emit(data.messages);
                 this.rooms$.emit(data.rooms);
                 this.currentRoom$.emit(data.currentRoom);
               });
   }
 
+
+  getCurrentRoom() {
+    return this.http.get(`http://localhost:5000/data`);
+  }
+
+
   //===============================================
   //                  MESSAGES
   //===============================================
+  getMessages() {
+    return this.wsService.listen('update-messages')
+  }
+  
   sendMessage( message: IMessageSend ) {
     this.wsService.emit('message', message);
   }
 
-  getMessages() {
-    return this.wsService.listen('new-message')
-  }
   
-  getDeletedMessages() {
-    return this.wsService.listen('update-messages')
-  }
-
   deleteMessage(message_id: string, room_id: string) {
     this.wsService.emit('delete-message', {message_id, room_id})
   }
@@ -67,16 +81,16 @@ export class ChatService {
   }
   
   emitSetUser( room_id: string ) {
-    this.authService.getUser$().pipe(
-      filter( user => user !== null)
-    ).subscribe( user => {
-      const userSocket: IUserSocket = {
-        name: user.name,
-        picture: user.picture,
-        room_id
-      }
-      this.wsService.emit('set-user', userSocket);
-    })
+    this.store.select('user')
+      .subscribe( user => {
+        const userSocket: IUserSocket = {
+          email: user.user.email,
+          name: user.user.name,
+          picture: user.user.picture,
+          room_id
+        }
+        this.wsService.emit('set-user', userSocket);
+      })
   }
   
   emitSetStatus( status: string, room_id: string ) {

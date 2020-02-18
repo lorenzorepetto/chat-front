@@ -14,6 +14,7 @@ export interface IUser {
 //===============================================
 
 export interface IUserSocket {
+    email: string
     name: string;
     room_id: string;
     picture: string;
