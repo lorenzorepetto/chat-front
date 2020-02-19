@@ -49,10 +49,13 @@ export class LeftPanelComponent implements OnInit {
       })
         
   }
+  
 
-
+  
   togglePanel(){
     this.showPanel = !this.showPanel;
   }
+  
+
 
 }

@@ -27,6 +27,8 @@ export class NavbarComponent implements OnInit {
   loadingRooms: boolean;
   errorRooms: any;
 
+  currentRoom: IRoom;
+
   constructor( public authService: AuthService,
                private store: Store<AppState>,
                public chatService: ChatService) { }
@@ -34,6 +36,10 @@ export class NavbarComponent implements OnInit {
   ngOnInit() {
     this.initUserSub();
     this.initRoomsSub();
+    this.store.select('currentRoom')
+      .subscribe( currentRoom => {
+        this.currentRoom = currentRoom.room;
+      })
   }
 
   
@@ -42,7 +48,9 @@ export class NavbarComponent implements OnInit {
   }
 
   changeRoom(room_id: string) {
-    this.store.dispatch( new SetRoomAction(room_id));
+    if (room_id !== this.currentRoom._id) {
+      this.store.dispatch( new SetRoomAction(room_id));
+    }
   }
 
   removeRoom( room: IRoom ) {
@@ -85,13 +93,13 @@ export class NavbarComponent implements OnInit {
       progressSteps: ['1', '2']
     }).queue([
       {
-        title: 'Nueva Sala',
-        text: 'Nombre de la sala (*)',
+        title: 'Nombre (*)',
+        text: 'Todas las salas son públicas',
         input: 'text',
       },
       {
-        title: 'Nueva Sala',
-        text: 'Descripción (opcional)',
+        title: 'Descripción (opcional)',
+        text: 'Todas las salas son públicas',
         input: 'textarea',
         confirmButtonText: 'Confirmar'
       }

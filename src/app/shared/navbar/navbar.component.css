@@ -13,3 +13,13 @@
 .dropdown-menu {
    width: 400px;
 }
+@media(max-width: 767px) {
+   .dropdown-menu {
+       width: 280px !important;
+   }
+}
+
+.selected {
+   color: #745AF2 !important;
+   cursor: default;
+}

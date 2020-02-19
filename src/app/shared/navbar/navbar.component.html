@@ -39,8 +39,13 @@
           
           <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
             <div *ngIf="!loadingRooms">
-              <a *ngFor="let room of rooms" (click)="changeRoom(room._id)" class="dropdown-item pointer" role="button">
-                <div class="row">
+              <a *ngFor="let room of rooms" 
+                  (click)="changeRoom(room._id)" 
+                  class="dropdown-item pointer" 
+                  [ngClass]="{'selected': room._id === currentRoom._id}" 
+                  role="button">
+                
+                  <div class="row">
                   <div class="col">
                     <i class="fa fa-arrow-circle-right"></i>
                     {{ room.name | titlecase }}

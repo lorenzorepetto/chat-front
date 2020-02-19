@@ -8,8 +8,8 @@
                 </h2>
                 <div class="row mb-0 pb-0" >
                     <div class="col">
-                        <h5 *ngIf="user.status === 'ONLINE'" class="text-success">Disponible</h5>
-                        <h5 *ngIf="user.status === 'BUSY'" class="text-warning">Ocupado</h5>
+                        <h5 *ngIf="user.status === 'ONLINE'" class="text-success pl-3">Disponible</h5>
+                        <h5 *ngIf="user.status === 'BUSY'" class="text-warning pl-3">Ocupado</h5>
                     </div>
                     <div class="col">
                         <h6 class="d-inline mr-3">Cambiar estado a: </h6>
@@ -31,12 +31,12 @@
                 </h2>
                 <div>
                     <h6 class="mb-0">
-                        <a data-toggle="collapse" class="title-desc" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                        <a data-toggle="collapse" class="title-desc" href="#collapseDescription" role="button" aria-expanded="false" aria-controls="collapseExample">
                             Descripción
                             <i class="fa fa-arrow-down"></i>
                         </a>
                     </h6>
-                    <div class="collapse" id="collapseExample">
+                    <div class="collapse" id="collapseDescription">
                         <div *ngIf="room.description" class="card card-body mb-0 description">
                             {{ room.description }}                            
                         </div>
@@ -64,9 +64,9 @@
                 Aún no hay mensajes en esta sala
             </li>
             
-            <p *ngIf="loadedRoom && messages.length >= 8" class="text-center">
+            <p *ngIf="loadedRoom && messages.length >= 12" class="text-center">
                 <i class="fa fa-arrow-up"></i>
-                Cargar todos los mensajes
+                Cargar todos los mensajes (15)
             </p>
             
             <li *ngFor="let message of messages" [ngClass]="{'reverse': user && user.email === message.user.email}">
@@ -114,7 +114,7 @@
                             [(ngModel)]="text"
                             placeholder="Escribe tu mensaje aquí" 
                             class="form-control b-0"
-                            autofocus
+                            myAutofocus
                             autocomplete="off"
                             maxlength="100">
                     <!-- </textarea> -->

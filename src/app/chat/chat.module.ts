@@ -5,7 +5,7 @@ import { FormsModule } from "@angular/forms";
 import { HttpClientModule } from "@angular/common/http";
 import { SharedModule } from '../shared/shared.module';
 
-
+import { AutofocusDirective } from './directives/autofocus.directive';
 
 import { LeftPanelComponent } from './left-panel/left-panel.component';
 import { RightPanelComponent } from './right-panel/right-panel.component';
@@ -17,7 +17,8 @@ import { ChatComponent } from './chat.component';
   declarations: [
     ChatComponent,
     LeftPanelComponent,
-    RightPanelComponent
+    RightPanelComponent,
+    AutofocusDirective
   ],
   imports: [
     CommonModule,
