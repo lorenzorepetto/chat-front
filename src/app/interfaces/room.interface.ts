@@ -1,4 +1,4 @@
-import { IUser } from '../../../../chat-back/models/user.model';
+import { IUser } from './user.interface';
 
 export interface IRoom {
     _id: string;
