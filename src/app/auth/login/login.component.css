@@ -1,0 +1,22 @@
+.login{
+    background: aliceblue;
+    border-radius: 10px;
+}
+
+.logo {
+    width: 120px;
+    height: 120px;
+}
+
+.login-button {
+    background: #33006C;
+    border: 1px solid #33006C;
+}
+
+.text-black {
+    color: currentColor;
+}
+
+.icons {
+    font-size: xx-large;
+}

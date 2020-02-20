@@ -26,7 +26,19 @@ export class RoomsEffects {
                     map( data => new roomsActions.LoadRoomsSuccessAction(data['rooms'])),
                     catchError(error => of( new roomsActions.LoadRoomsFailAction(error)))
                 )
-        }),
+        })
+    )
+
+    @Effect()
+    listenToRooms$ = this.actions$.pipe(
+        ofType( roomsActions.LISTEN_TO_ROOMS ),
+        switchMap( () => {
+            return this.chatService.listenToRooms()
+                .pipe(
+                    map( data => new roomsActions.LoadRoomsSuccessAction(data['rooms'])),
+                    catchError(error => of( new roomsActions.LoadRoomsFailAction(error)))
+                )
+        })
     )
 
 }

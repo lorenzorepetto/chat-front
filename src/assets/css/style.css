@@ -72,7 +72,7 @@ body {
 html {
   position: relative;
   min-height: 100%;
-  background: #ffffff;
+  background: black;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; }
 

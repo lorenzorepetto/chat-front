@@ -7,6 +7,7 @@ import { IRoom } from '../../interfaces/room.interface';
 export const LOAD_ROOMS = '[Rooms] Load Room';
 export const LOAD_ROOMS_FAIL = '[Rooms] Load Room FAIL';
 export const LOAD_ROOMS_SUCCESS = '[Rooms] Load Room SUCCESS';
+export const LISTEN_TO_ROOMS = '[Rooms] Listening to rooms'
 
 //===============================================
 //                  CLASSES
@@ -27,10 +28,15 @@ export class LoadRoomsSuccessAction implements Action {
     constructor( public rooms: IRoom[] ) {}
 }
 
+export class ListenToRoomsAction implements Action {
+    readonly type = LISTEN_TO_ROOMS;
+}
+
 
 //===============================================
 //                  EXPORTS
 //===============================================
 export type roomsActions =  LoadRoomsAction |
                             LoadRoomsFailAction | 
-                            LoadRoomsSuccessAction;
+                            LoadRoomsSuccessAction |
+                            ListenToRoomsAction;

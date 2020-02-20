@@ -1,14 +1,16 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { IRoom } from 'src/app/interfaces/room.interface';
 import { AuthService } from '../../services/auth.service';
 import { ChatService } from '../../services/chat.service';
-import { AppState } from '../../store/app.reducers';
-import { Store } from '@ngrx/store';
 import { IUser } from 'src/app/interfaces/user.interface';
 import { filter } from 'rxjs/operators';
-import { LoadRoomsAction } from '../../store/actions/rooms.actions';
-import { SetRoomAction, LoadRoomAction } from '../../store/actions/current-room.actions';
 import Swal from 'sweetalert2';
+
+// Redux
+import { AppState } from '../../store/app.reducers';
+import { Store } from '@ngrx/store';
+import * as fromActions from '../../store/actions'
+
 
 @Component({
   selector: 'app-navbar',
@@ -25,7 +27,7 @@ export class NavbarComponent implements OnInit {
   rooms: IRoom[];
   loadedRooms: boolean;
   loadingRooms: boolean;
-  errorRooms: any;
+  errorRooms: any = null;
 
   currentRoom: IRoom;
 
@@ -44,13 +46,18 @@ export class NavbarComponent implements OnInit {
 
   
   getRooms() {
-    this.store.dispatch( new LoadRoomsAction());
+    if (this.loadedRooms) {
+      return;
+    }
+    this.store.dispatch( new fromActions.ListenToRoomsAction() );
+    this.store.dispatch( new fromActions.LoadRoomsAction());
   }
 
   changeRoom(room_id: string) {
-    if (room_id !== this.currentRoom._id) {
-      this.store.dispatch( new SetRoomAction(room_id));
-    }
+    if (room_id === this.currentRoom._id) {
+      return;
+    }    
+    this.store.dispatch( new fromActions.SetRoomAction(room_id));
   }
 
   removeRoom( room: IRoom ) {
@@ -65,11 +72,9 @@ export class NavbarComponent implements OnInit {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.value) {
-        this.store.dispatch( new LoadRoomAction());
         this.chatService.deleteRoom( room._id )
           .subscribe( (res: any) => {
             if (res.ok) {
-              this.store.dispatch( new LoadRoomsAction());
               Swal.fire({
                 title: 'Sala eliminada',
                 text: `Se eliminó la sala con nombre ${ res.room.name }`,
@@ -140,6 +145,9 @@ export class NavbarComponent implements OnInit {
       this.rooms = rooms.rooms;
       this.errorRooms = rooms.error;
       this.loadedRooms = rooms.loaded;
+      if ( rooms.rooms.indexOf(this.currentRoom) < 0 ) {
+        this.changeRoom( rooms.rooms[0]._id );
+      }
     })
   }
   
@@ -182,7 +190,7 @@ export class NavbarComponent implements OnInit {
       confirmButtonColor: '#745AF2',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Ir a la sala',
-      cancelButtonText: 'Cancelar'
+      cancelButtonText: 'Más tarde'
     }).then((result) => {
       if (result.value) {
         this.changeRoom( room._id );

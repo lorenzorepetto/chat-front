@@ -22,7 +22,9 @@ export class CurrentRoomEffects {
         switchMap( () => {
             return this.chatService.getCurrentRoom()
                 .pipe(
-                    map( data => new currentRoomActions.LoadRoomSuccessAction(data['currentRoom'], data['messages'])),
+                    map( data => new currentRoomActions.LoadRoomSuccessAction(data['currentRoom'], 
+                                                                              data['messages']['messages'], 
+                                                                              Number(data['messages']['total']))),
                     catchError(error => of( new currentRoomActions.LoadRoomFailAction(error)))
                 )
         }),
@@ -35,7 +37,9 @@ export class CurrentRoomEffects {
             this.chatService.emitSetRoom(action['id']);
             return this.chatService.getCurrentRoom(action['id'])
                 .pipe(
-                    map( data => new currentRoomActions.LoadRoomSuccessAction(data['currentRoom'], data['messages'])),
+                    map( data => new currentRoomActions.LoadRoomSuccessAction(data['currentRoom'], 
+                                                                              data['messages']['messages'], 
+                                                                              Number(data['messages']['total']))),
                     catchError(error => of( new currentRoomActions.LoadRoomFailAction(error)))
                 )
         })
@@ -48,7 +52,8 @@ export class CurrentRoomEffects {
         switchMap( () => {
             return this.chatService.getMessages()
                 .pipe(
-                    map( (data: IMessage[]) => new currentRoomActions.UpdateMessagesAction(data)),
+                    map( data => new currentRoomActions.UpdateMessagesAction(data['messages'], 
+                                                                             Number(data['total']))),
                 )
         }),
     )

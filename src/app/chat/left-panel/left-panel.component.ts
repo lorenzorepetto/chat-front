@@ -1,15 +1,11 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { IRoom } from '../../interfaces/room.interface';
+import { Component, OnInit } from '@angular/core';
 import { ChatService } from '../../services/chat.service';
-import { Observable } from 'rxjs';
-import { filter } from 'rxjs/operators';
 import { IUserSocket, IUser } from '../../interfaces/user.interface';
-import { Store } from '@ngrx/store';
-import { AppState } from '../../store/app.reducers';
-
 
 // Redux
 import * as fromActions from "../../store/actions";
+import { Store } from '@ngrx/store';
+import { AppState } from '../../store/app.reducers';
 
 @Component({
   selector: 'app-left-panel',
@@ -32,14 +28,13 @@ export class LeftPanelComponent implements OnInit {
     this.store.select('user')
       .subscribe( user => this.user = user.user )
 
-    this.store.select('activeUsers').pipe(
-      filter( activeUsers => activeUsers.users.length > 0)
-    ).subscribe( activeUsers => {
-      if (this.user) {
-        this.users = activeUsers.users.filter( user => user.email != this.user.email );
-        this.loading = false;
-      }
-    })    
+    this.store.select('activeUsers')
+      .subscribe( activeUsers => {
+        if (this.user) {
+          this.users = activeUsers.users.filter( user => user.email != this.user.email );
+          this.loading = false;
+        }
+      })    
 
     this.store.select('currentRoom')
       .subscribe( currentRoom => {

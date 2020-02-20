@@ -63,7 +63,10 @@
                 <i class="fa fa-spinner fa-spin"></i>
                 Cargando salas
             </div>
-
+            <div *ngIf="errorRooms" class="alert alert-danger p-2 m-2">
+              <i class="fa fa-warning"></i>
+              Algo salió mal!
+            </div>
           </div>
         </li>
         <li class="nav-item">

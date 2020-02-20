@@ -21,8 +21,6 @@ const initState: ActiveUsersState = {
 export function activeUsersReducer( state = initState, action: fromUser.activeUsersActions): ActiveUsersState {
     
     switch (action.type) {
-        // case fromUser.LISTEN_TO_USERS:
-        //     return state
     
         case fromUser.UPDATE_USERS:
             return {

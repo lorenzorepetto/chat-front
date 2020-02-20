@@ -45,9 +45,14 @@ export function userReducer( state = initState, action: fromUser.userActions): U
         case fromUser.LOAD_USER_FAIL:
             return {
                 ...state,
-                loaded: false,
+                loaded: true,
                 loading: false,
-                error: action.payload
+                error: {
+                    status: action.payload.status,
+                    message: action.payload.message,
+                    url: action.payload.url,
+                    ok: action.payload.ok
+                }
             }
         
 

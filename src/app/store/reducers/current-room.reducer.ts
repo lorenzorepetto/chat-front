@@ -8,6 +8,7 @@ import { IMessage } from '../../interfaces/message.interface';
 export interface CurrentRoomState {
     room: IRoom;
     messages: IMessage[];
+    total: number;
     loaded: boolean;
     loading: boolean;
     error: any;
@@ -19,6 +20,7 @@ export interface CurrentRoomState {
 const initState: CurrentRoomState = {
     room: null,
     messages: [],
+    total: null,
     loaded: false,
     loading: false,
     error: null
@@ -43,15 +45,21 @@ export function currentRoomReducer( state = initState, action: fromCurrentRoom.c
                 loading: false,
                 loaded: true,
                 room: { ... action.room},
-                messages: [ ...action.messages ]
+                messages: [ ...action.messages ],
+                total: action.total
             }
         
         case fromCurrentRoom.LOAD_ROOM_FAIL:
             return {
                 ...state,
-                loaded: false,
+                loaded: true,
                 loading: false,
-                error: action.payload
+                error: {
+                    status: action.payload.status,
+                    message: action.payload.message,
+                    url: action.payload.url,
+                    ok: action.payload.ok
+                }
             }
         
 
@@ -61,7 +69,8 @@ export function currentRoomReducer( state = initState, action: fromCurrentRoom.c
         case fromCurrentRoom.UPDATE_MESSAGES:
             return {
                 ...state,
-                messages: [...action.messages]
+                messages: [...action.messages],
+                total: action.total
             }
 
         default:

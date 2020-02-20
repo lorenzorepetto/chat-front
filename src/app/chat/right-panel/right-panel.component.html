@@ -27,7 +27,11 @@
             <div *ngIf="loadedRoom; else loadingRoom">
                 <h2 class="box-title p-3">
                     <small>Sala: </small>
-                    <span class="badge badge-pill badge-primary ml-2">{{ room.name | titlecase}}</span>
+                    <span class="badge badge-pill badge-primary ml-2">
+                        {{ room.name | titlecase}}
+                    </span>
+                    <small *ngIf="room.owner" class="ml-2">Creada por {{ room.owner.name }}</small> 
+                    
                 </h2>
                 <div>
                     <h6 class="mb-0">
@@ -64,9 +68,9 @@
                 Aún no hay mensajes en esta sala
             </li>
             
-            <p *ngIf="loadedRoom && messages.length >= 12" class="text-center">
+            <p *ngIf="loadedRoom && total >= 8 && total !== messages.length" (click)="getAll()" class="text-center pointer">
                 <i class="fa fa-arrow-up"></i>
-                Cargar todos los mensajes (15)
+                Cargar todos los mensajes ({{ total }})
             </p>
             
             <li *ngFor="let message of messages" [ngClass]="{'reverse': user && user.email === message.user.email}">
@@ -120,8 +124,11 @@
                     <!-- </textarea> -->
                 </div>
                 <div class="col-4 text-right">
-                    <button [disabled]="!user || !room" type="submit" class="btn btn-info btn-circle btn-lg">
+                    <button *ngIf="!sending" [disabled]="!user || !room" type="submit" class="btn btn-info btn-circle btn-lg">
                         <i class="fa fa-paper-plane-o"></i> 
+                    </button>
+                    <button *ngIf="sending" class="btn btn-info btn-circle btn-lg">
+                        <i class="fa fa-spinner fa-spin"></i> 
                     </button>
                 </div>
             </div>

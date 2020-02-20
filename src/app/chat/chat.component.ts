@@ -1,10 +1,6 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { WebsocketService } from '../services/websocket.service';
 import { ChatService } from '../services/chat.service';
-import { IMessage } from '../interfaces/message.interface';
-import { IRoom } from '../interfaces/room.interface';
-import { AuthService } from '../services/auth.service';
-import { filter } from 'rxjs/operators';
 import { IUser } from '../interfaces/user.interface';
 import { Store } from '@ngrx/store';
 import { AppState } from '../store/app.reducers';
@@ -12,6 +8,7 @@ import { AppState } from '../store/app.reducers';
 
 // Redux
 import * as fromActions from "../store/actions";
+import { filter } from 'rxjs/operators';
 
 
 
@@ -26,7 +23,6 @@ export class ChatComponent implements OnInit {
   user: IUser;
 
   constructor( public chatService: ChatService,
-               public authService: AuthService,
                public wsService: WebsocketService,
                private store: Store<AppState>) { }
 
@@ -35,12 +31,11 @@ export class ChatComponent implements OnInit {
     this.store.dispatch( new fromActions.LoadUserAction() );
     this.store.dispatch( new fromActions.LoadRoomAction() );
     this.store.dispatch( new fromActions.ListenToMessagesAction());
+  
+    this.store.select('currentRoom').pipe(
+      filter( currentRoom => currentRoom.room !== null)
+    ).subscribe( currentRoom => this.chatService.emitSetUser( currentRoom.room._id ))
 
-    this.chatService.getData();
-    this.chatService.currentRoom$.subscribe( (currentRoom: IRoom) => {
-      this.room_id = currentRoom._id;
-      this.chatService.emitSetUser( currentRoom._id );
-    });
   }
 
   

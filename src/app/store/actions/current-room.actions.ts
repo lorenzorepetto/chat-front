@@ -28,7 +28,7 @@ export class LoadRoomFailAction implements Action {
 export class LoadRoomSuccessAction implements Action {
     readonly type = LOAD_ROOM_SUCCESS;
 
-    constructor( public room: IRoom, public messages: IMessage[] ) {}
+    constructor( public room: IRoom, public messages: IMessage[], public total: number ) {}
 }
 
 export class SetRoomAction implements Action {
@@ -45,7 +45,7 @@ export class ListenToMessagesAction implements Action {
 export class UpdateMessagesAction implements Action {
     readonly type = UPDATE_MESSAGES;
 
-    constructor( public messages: IMessage[] ) {}
+    constructor( public messages: IMessage[], public total: number ) {}
 }
 
 

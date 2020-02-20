@@ -11,27 +11,39 @@
     <!-- Main wrapper - style you can find in pages.scss -->
     <!-- ============================================================== -->
     <section id="wrapper">
-        <div class="login-register" style="background-image:url(../assets/images/background/chat-back4.jpg);">
+        <div class="login-register" style="background-image:url(../assets/images/chat-back.png);">
             <div class="login-box card">
-                <div class="card-body">
-                    <form class="form-horizontal form-material" id="loginform" action="chat.html">
-                        <h3 class="box-title m-b-20">Ingresar al Chat</h3>
-                        <div class="form-group ">
-                            <div class="col-xs-12">
-                                <input class="form-control" type="text" required="" placeholder="Nombre de usuario" name="nombre"> </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-xs-12">
-                                <input class="form-control" type="text" required="" placeholder="Sala de chat" name="sala"> </div>
-                        </div>
+                <div class="card-body text-center login">
+             
+                    <img src="../../../assets/images/logo.ico" class="logo" alt="ChatApp">
+                    
+                    <h3 class="box-title m-b-20"><strong>ChatApp</strong></h3>
+                    <div class="">
+                        Aplicación de Chat realizada con fines de demostrar el uso de tecnologías. Ingresá con tu cuenta de Google,
+                        tu información está segura. 
+                        Al ingresar podés elegir una sala, o bien crear una y comenzar a chatear.
+                    </div>
 
-                        <div class="form-group text-center">
-                            <div class="col-xs-12 p-b-20">
-                                <button (click)="authService.login()" class="btn btn-block btn-lg btn-info btn-rounded" type="submit">Ingresar al chat</button>
-                            </div>
+                    <div class="form-group text-center">
+                        <div class="col-xs-12 p-b-20 pt-5">
+                            <button (click)="authService.login()" 
+                                    class="btn btn-block btn-lg btn-primary btn-rounded login-button" 
+                                    type="submit">
+                                    Ingresar al chat
+                            </button>
                         </div>
-                    </form>
+                    </div>
+            
+                        <small>Lorenzo Repetto</small>
+                    <div class="icons">
+                        <a href="" class="text-black" target="_blank">
+                            <i class="fa fa-linkedin-square p-1"></i>
+                        </a>
+                        <a href="" class="text-black" target="_blank">
+                            <i class="fa fa-github-square p-1"></i>
+                        </a>
 
+                    </div>
                 </div>
             </div>
         </div>

@@ -1,11 +1,11 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { IMessage, IMessageSend } from '../../interfaces/message.interface';
 import { IRoom } from '../../interfaces/room.interface';
 import { ChatService } from '../../services/chat.service';
-import { AuthService } from '../../services/auth.service';
-import { filter } from 'rxjs/operators';
 import { IUser, validStates } from '../../interfaces/user.interface';
 import Swal from 'sweetalert2'
+
+// Redux
 import { Store } from '@ngrx/store';
 import { AppState } from '../../store/app.reducers';
 
@@ -16,7 +16,9 @@ import { AppState } from '../../store/app.reducers';
 })
 export class RightPanelComponent implements OnInit {
   
+  // Message
   text: string = '';
+  sending: boolean;
   
   // User
   user: IUser = null;
@@ -28,9 +30,9 @@ export class RightPanelComponent implements OnInit {
   messages: IMessage[];
   loadedRoom: boolean;
   errorRoom: any; 
+  total: number;
 
   constructor( public chatService: ChatService,
-               public authService: AuthService,
                private store: Store<AppState> ) { }
 
   ngOnInit() {  
@@ -38,7 +40,6 @@ export class RightPanelComponent implements OnInit {
     this.initUserSub();
   }
   
-
   //===============================================
   //                  MESSAGES
   //===============================================
@@ -51,6 +52,7 @@ export class RightPanelComponent implements OnInit {
       user: this.user,
       room: this.room._id
     }
+    this.sending = true;
     this.chatService.sendMessage(message);
     this.text = '';
   }
@@ -72,6 +74,15 @@ export class RightPanelComponent implements OnInit {
         }
       }
     })
+  }
+
+  getAll() {
+    this.chatService.getAllMessages( this.room._id )
+      .subscribe( (res: any) => {
+        if (res.ok) {
+          this.messages = res.messages
+        }
+      })
   }
 
 
@@ -96,7 +107,9 @@ export class RightPanelComponent implements OnInit {
         this.room = currentRoom.room;
         this.loadedRoom = currentRoom.loaded;
         this.messages = currentRoom.messages;
-        this.errorRoom = currentRoom.error; 
+        this.errorRoom = currentRoom.error;
+        this.total = currentRoom.total; 
+        this.sending = false;
       });
   }
 

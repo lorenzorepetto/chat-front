@@ -45,9 +45,14 @@ export function roomsReducer( state = initState, action: fromRooms.roomsActions)
         case fromRooms.LOAD_ROOMS_FAIL:
             return {
                 ...state,
-                loaded: false,
+                loaded: true,
                 loading: false,
-                error: action.payload
+                error: {
+                    status: action.payload.status,
+                    message: action.payload.message,
+                    url: action.payload.url,
+                    ok: action.payload.ok
+                }
             }
 
         default:

@@ -7,7 +7,7 @@
      <!--PANEL  -->
     
       <div class="chat-left-inner">
-          <ul *ngIf="!loading; else loadingUsers" class="chatonline style-none" id="divUsuarios">
+        <ul *ngIf="!loading" class="chatonline style-none" id="divUsuarios">
               <li>
                   <a href="javascript:void(0)" class="active"><span>Usuarios Conectados</span></a>
               </li>
@@ -21,15 +21,15 @@
                 </a>
               </li>              
           </ul>
-          <ng-template #loadingUsers>
+          <div *ngIf="loading">
             <div class="p-3">
               <i class="fa fa-spinner fa-spin"></i>
               Cargando usuarios
             </div>
-          </ng-template>
+          </div>
           <div *ngIf="!loading && users.length === 0" class="alert alert-info p-2 m-2" role="alert">
             <i class="fa fa-info-circle mr-2"></i>
-            No hay usuarios conectados a esta sala
+            No hay otros usuarios conectados a esta sala
           </div>
       </div>
   </div>

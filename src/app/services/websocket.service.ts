@@ -8,8 +8,6 @@ export class WebsocketService {
 
   public socketStatus: boolean = false;
   
-
-
   constructor( private socket: Socket) { 
     this.checkStatus();
   }
