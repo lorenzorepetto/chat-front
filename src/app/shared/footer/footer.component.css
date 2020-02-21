@@ -1,3 +1,8 @@
 .footer {
     background: #00013a !important;
+    padding: 8px 6px;
+ }
+
+ a{
+     color: aliceblue;
  }

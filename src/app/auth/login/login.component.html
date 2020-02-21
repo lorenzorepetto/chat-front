@@ -21,26 +21,34 @@
                     <div class="">
                         Aplicación de Chat realizada con fines de demostrar el uso de tecnologías. Ingresá con tu cuenta de Google,
                         tu información está segura. 
-                        Al ingresar podés elegir una sala, o bien crear una y comenzar a chatear.
+                        Al ingresar podés elegir una sala, o bien crear una y comenzar a chatear. Además, vas a poder eliminar toda 
+                        tu actividad en la aplicación.
                     </div>
 
                     <div class="form-group text-center">
                         <div class="col-xs-12 p-b-20 pt-5">
-                            <button (click)="authService.login()" 
+                            <button *ngIf="!loading" (click)="login()" 
                                     class="btn btn-block btn-lg btn-primary btn-rounded login-button" 
                                     type="submit">
                                     Ingresar al chat
                             </button>
+                            <button class="btn btn-block btn-lg btn-primary btn-rounded login-button" disabled *ngIf="loading">
+                                <i class="fa fa-spinner fa-spin"></i>
+                                Cargando
+                            </button>
                         </div>
                     </div>
             
-                        <small>Lorenzo Repetto</small>
+                    <a href="" class="text-black" target="_blank">
+                        <small class="hover-violet">Lorenzo Repetto</small>
+                    </a>
+                    
                     <div class="icons">
-                        <a href="" class="text-black" target="_blank">
-                            <i class="fa fa-linkedin-square p-1"></i>
+                        <a href="https://www.linkedin.com/in/lorenzo-repetto-7ab628180" class="text-black" target="_blank">
+                            <i class="fa fa-linkedin-square p-1 hover-violet"></i>
                         </a>
-                        <a href="" class="text-black" target="_blank">
-                            <i class="fa fa-github-square p-1"></i>
+                        <a href="https://github.com/lorenzorepetto" class="text-black" target="_blank">
+                            <i class="fa fa-github-square p-1 hover-violet"></i>
                         </a>
 
                     </div>

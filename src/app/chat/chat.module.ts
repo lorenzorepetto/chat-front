@@ -11,6 +11,10 @@ import { LeftPanelComponent } from './left-panel/left-panel.component';
 import { RightPanelComponent } from './right-panel/right-panel.component';
 import { ChatComponent } from './chat.component';
 
+// Services
+import { ChatService } from '../services/chat.service';
+import { WebsocketService } from '../services/websocket.service';
+
 
 
 @NgModule({
@@ -25,6 +29,10 @@ import { ChatComponent } from './chat.component';
     SharedModule,
     FormsModule,
     HttpClientModule
+  ],
+  providers: [
+    ChatService,
+    WebsocketService
   ]
 })
 export class ChatModule { }

@@ -7,3 +7,9 @@
     color: aliceblue !important;
  }
 
+.icons {
+    font-size: xx-large;
+}
+.hover-violet:hover{
+    color: #6300DD;
+}

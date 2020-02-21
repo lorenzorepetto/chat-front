@@ -16,7 +16,7 @@ import { environment } from 'src/environments/environment';
 
 // SOCKETS
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
-const config: SocketIoConfig = { url: 'http://localhost:5000', options: {} };
+const config: SocketIoConfig = { url: environment.API_URL, options: {} };
 
 // COMPONENTS
 import { AppComponent } from './app.component';
@@ -41,7 +41,6 @@ import { LoginComponent } from './auth/login/login.component';
       logOnly: environment.production, // Restrict extension to log-only mode
     })
   ],
-  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

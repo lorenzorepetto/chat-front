@@ -7,9 +7,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../store/app.reducers';
 import { environment } from '../../environments/environment';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class ChatService {
 
 
@@ -70,12 +68,20 @@ export class ChatService {
   deleteMessage(message_id: string, room_id: string) {
     this.wsService.emit('delete-message', {message_id, room_id})
   }
+  
+  deleteAllMessages(email: string, room_id: string) {
+    this.wsService.emit('delete-all-messages', {email, room_id});
+  }
 
   //===============================================
   //                  USERS
   //===============================================
   getActiveUsers() {
     return this.wsService.listen('active-users');
+  }
+  
+  getSetUserCallback() {
+    return this.wsService.listen('set-user-callback')
   }
 
   emitActiveUsers( room_id: string ) {

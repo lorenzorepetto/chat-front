@@ -76,6 +76,25 @@ export class RightPanelComponent implements OnInit {
     })
   }
 
+  removeAll() {
+    Swal.fire({
+      title: '¿Estás seguro de eliminar todo?',
+      text: "Se eliminarán todos tus mensajes en esta sala",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#745AF2',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Confirmar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.value) {
+        if (this.room && this.user) {
+          this.chatService.deleteAllMessages(this.user.email, this.room._id);
+        }
+      }
+    })
+  }
+
   getAll() {
     this.chatService.getAllMessages( this.room._id )
       .subscribe( (res: any) => {

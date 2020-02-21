@@ -139,13 +139,13 @@ export class NavbarComponent implements OnInit {
   
   private initRoomsSub() {
     this.store.select('rooms').pipe(
-      filter( rooms => rooms.loaded)
+      filter( rooms => rooms.loaded || rooms.loading)
     ).subscribe( rooms => {
       this.loadingRooms = rooms.loading;
       this.rooms = rooms.rooms;
       this.errorRooms = rooms.error;
       this.loadedRooms = rooms.loaded;
-      if ( rooms.rooms.indexOf(this.currentRoom) < 0 ) {
+      if ( rooms.loaded && rooms.rooms.indexOf(this.currentRoom) < 0 ) {
         this.changeRoom( rooms.rooms[0]._id );
       }
     })

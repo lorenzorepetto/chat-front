@@ -9,6 +9,7 @@ import { AppState } from '../store/app.reducers';
 // Redux
 import * as fromActions from "../store/actions";
 import { filter } from 'rxjs/operators';
+import { AuthService } from '../services/auth.service';
 
 
 
@@ -23,11 +24,13 @@ export class ChatComponent implements OnInit {
   user: IUser;
 
   constructor( public chatService: ChatService,
+               private authService: AuthService,
                public wsService: WebsocketService,
                private store: Store<AppState>) { }
 
   ngOnInit() {
     
+    this.subsSetUserCallback();
     this.store.dispatch( new fromActions.LoadUserAction() );
     this.store.dispatch( new fromActions.LoadRoomAction() );
     this.store.dispatch( new fromActions.ListenToMessagesAction());
@@ -35,7 +38,16 @@ export class ChatComponent implements OnInit {
     this.store.select('currentRoom').pipe(
       filter( currentRoom => currentRoom.room !== null)
     ).subscribe( currentRoom => this.chatService.emitSetUser( currentRoom.room._id ))
+  }
 
+
+  private subsSetUserCallback() {
+    this.chatService.getSetUserCallback()
+      .subscribe( (res: any) => {
+        if (res.error) {
+          this.authService.logout();
+        }
+      })
   }
 
   

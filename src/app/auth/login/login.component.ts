@@ -8,10 +8,17 @@ import { AuthService } from '../../services/auth.service';
 })
 export class LoginComponent implements OnInit {
 
+  loading: boolean;
+
   constructor( public authService: AuthService ) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.loading = false;
+  }
   
-  
+  login() {
+    this.loading = true;
+    this.authService.login()
+  }  
 
 }
