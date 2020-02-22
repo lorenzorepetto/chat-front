@@ -36,3 +36,7 @@ li {
 .back-alice {
     background: aliceblue;
 }
+
+.w-max {
+    width: max-content !important;
+}
